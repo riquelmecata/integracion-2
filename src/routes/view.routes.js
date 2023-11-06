@@ -68,6 +68,7 @@ router.get("/login", async (req, res) => {
     }
 })*/
 
+/* 
 router.get("/register", async (req, res) => {
     if(req?.user?.email) return res.redirect("/products")
 
@@ -78,6 +79,8 @@ router.get("/register", async (req, res) => {
         res.send(500).json({ error: e })
     }
 })
+
+*/
 
 
 /** esto funciona */

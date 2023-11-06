@@ -33,28 +33,30 @@ form.onsubmit = async (e) => {
     };
 
     try {
-        const response = await axios.post("http://localhost:8080/api/sessions/register", user);
-        const data = response.data;
-
-        if (data.result) {
-            // Mostrar SweetAlert si el registro es exitoso
-            Swal.fire({
-                title: 'Registrado',
-                text: '¡Registro exitoso! ¿Desea ir a la página de inicio de sesión?',
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonText: 'Sí',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = 'http://localhost:8080/login'; // Redirige a la página de inicio de sesión
-                } else {
-                    resetForm();
-                }
-            });
+        const response = await axios.post("http://localhost:8080/api/register", user);
+        if (response.status === 200) {
+            if (response.data) {
+                // Mostrar SweetAlert si el registro es exitoso
+                Swal.fire({
+                    title: 'Registrado',
+                    text: '¡Registro exitoso! ¿Desea ir a la página de inicio de sesión?',
+                    icon: 'success',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí',
+                    cancelButtonText: 'No'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'http://localhost:8080/'; // Redirige a la página de inicio de sesión
+                    } else {
+                        resetForm();
+                    }
+                });
+            }
         }
     } catch (error) {
         console.log(error);
-        alert(error.response.data.error);
+        if (error.response && error.response.data && error.response.data.error) {
+            alert(error.response.data.error);
+        }
     }
 };

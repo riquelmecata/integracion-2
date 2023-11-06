@@ -77,12 +77,7 @@ app.post("/login", async (req, res) => {
     res.json({ token, user: { email: user.email, adminRole: user.adminRole } });
 });
 
-app.get('/current', passportCall('jwt'), authorization('user'), (req,res) =>{
-    res.sendFile('current.html', { root: app.get('views') });
-})
-/** 
-
-router.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => {
     const {
         first_name,
         last_name,
@@ -113,20 +108,31 @@ router.post("/register", async (req, res) => {
             let newUser = await dbM.createUser(obj)
             if (!newUser.success) res.status(400).json({ error: "No se pudo crear el usuario" })
             // return res.redirect("../../login")
+        /*
             res.status(200).json({ result: newUser.success })
+            */
+           const token = generateToken(res, email, password)
+           res.send({token})
         } catch (e) {
             res.status(500).json({ error: e.message })
         }
     } else return res.status(400).json({ error: "Faltan campos obligatorios" })
 
-}) */
+});
 
+app.get('/current', passportCall('jwt'), authorization('user'), (req,res) =>{
+    res.sendFile('current.html', { root: app.get('views') });
+});
+
+app.get("/register", async (req, res) => {
+    res.sendFile('register.html', { root: app.get('views') });
+});
 
 const PORT = 8080
 
 const httpServer = app.listen(PORT, () => {
     console.log("Andando en puerto " + PORT)
-})
+});
 
 
 httpServer
