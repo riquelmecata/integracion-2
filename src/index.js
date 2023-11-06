@@ -54,7 +54,7 @@ app.set("views", __dirname + "/views")
 app.set("view engine", "handlebars")
 
 app.get('/', (req, res) => {
-    res.sendFile('home.html', { root: app.get('views') });
+    res.sendFile('index.html', { root: app.get('views') });
 });
 
 
@@ -104,6 +104,7 @@ app.post("/api/register", async (req, res) => {
             obj.age = parseFloat(age);
             obj.adminRole = adminRole.toString().toLowerCase();
             obj.password = password; 
+            obj.cart = carts.createCart();
 
             let newUser = await dbM.createUser(obj)
             if (!newUser.success) res.status(400).json({ error: "No se pudo crear el usuario" })
@@ -121,7 +122,7 @@ app.post("/api/register", async (req, res) => {
 });
 
 app.get('/current', passportCall('jwt'), authorization('user'), (req,res) =>{
-    res.sendFile('current.html', { root: app.get('views') });
+    res.sendFile('home.html', { root: app.get('views') });
 });
 
 app.get("/register", async (req, res) => {
