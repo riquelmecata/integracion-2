@@ -56,8 +56,9 @@ router.get("/carts/:cid", async (req, res) => {
         res.send(500).json({ error: e })
     }
 })
-
+/** 
 router.get("/login", async (req, res) => {
+
     if(req?.user?.email) return res.redirect("/products")
     try {
 
@@ -65,7 +66,7 @@ router.get("/login", async (req, res) => {
     } catch (e) {
         res.send(500).json({ error: e })
     }
-})
+})*/
 
 router.get("/register", async (req, res) => {
     if(req?.user?.email) return res.redirect("/products")

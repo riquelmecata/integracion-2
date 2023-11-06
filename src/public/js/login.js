@@ -1,8 +1,8 @@
+
 const divProducts = document.getElementById('products-container')
 const form = document.getElementById('formulario')
 const email = document.getElementById('email')
 const contraseña = document.getElementById('contraseña')
-
 
 
 const resetForm = () => {
@@ -19,17 +19,20 @@ form.onsubmit = async (e) => {
     };
 
     try {
-        const { data } = await axios.post("http://localhost:8080/api/sessions/login", user);
-
-        if (data.adminRole && data.adminRole.toLowerCase() === 'admin') {
-            window.location.replace('http://localhost:8080/profile');
+        const response = await axios.post("http://localhost:8080/login", user);
+        if (response.status === 200) {
+            const data = response.data;
+            localStorage.setItem("token", data.token);
+            if (data.token && data.user.adminRole === 'admin') {
+                /* window.location.href = '/admin'; */
+            } else if (data.token && data.user.adminRole === 'usuario') {
+                window.location.href = '/current';
+            }
+            console.log("Inicio de sesión exitoso");
         } else {
-            window.location.replace('http://localhost:8080/products');
+            console.error("Error en el inicio de sesión");
         }
-        
-        resetForm();
     } catch (error) {
-        console.log(error);
-        alert(error.response.data.error);
+        console.error("Error en el inicio de sesión", error);
     }
 };

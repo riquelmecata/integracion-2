@@ -24,6 +24,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    cart: {
+        type: String
+    },
     adminRole: {
         type: String,
     },
